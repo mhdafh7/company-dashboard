@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn run lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
@@ -14,10 +20,13 @@
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "@types/react-table": "^7.7.14",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "next": "13.4.2",
     "postcss": "8.4.23",
     "react": "18.2.0",
@@ -29,5 +38,10 @@
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
     "zustand": "^4.3.8"
+  },
+  "devDependencies": {
+    "@types/node": "^14.11.2",
+    "gts": "^3.1.1",
+    "typescript": "~4.7.0"
   }
 }

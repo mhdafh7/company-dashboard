@@ -1,32 +1,32 @@
-"use client";
-import { ChangeEvent, FormEvent, useId, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useAddUserModalStore } from "@/store/userModalStore";
-import { addUser } from "@/api/users";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { toast } from "react-toastify";
+'use client';
+import React, {ChangeEvent, FormEvent, useId, useState} from 'react';
+import {useMutation, useQueryClient} from 'react-query';
+import {useAddUserModalStore} from '../store/userModalStore';
+import {addUser} from '../api/users';
+import {XMarkIcon} from '@heroicons/react/20/solid';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddUserModal = () => {
-  const { toggle } = useAddUserModalStore();
+  const {toggle} = useAddUserModalStore();
 
-  const [newUser, setNewUser] = useState({ name: "", email: "", role: "" });
+  const [newUser, setNewUser] = useState({name: '', email: '', role: ''});
 
   const queryClient = useQueryClient();
   const newId = useId();
 
   const addUserMutation = useMutation(addUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries("users");
-      toast.success("User Added Successfully", {
-        position: "top-right",
+      queryClient.invalidateQueries('users');
+      toast.success('User Added Successfully', {
+        position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: 'colored',
       });
     },
   });
@@ -42,15 +42,15 @@ const AddUserModal = () => {
 
     toggle();
   };
-  const handleChange = (e: ChangeEvent<HTMLFormElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (e: any) => {
+    const {name, value} = e.target;
     setNewUser({
       ...newUser,
       [name]: value,
     });
   };
   return (
-    <div className="fixed z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm grid place-items-center px-6">
+    <div className="fixed z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-screen h-screen bg-gray-500 bg-opacity-75 transition-opacity grid place-items-center px-6">
       <form
         onSubmit={handleSubmit}
         onChange={handleChange}

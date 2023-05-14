@@ -1,16 +1,17 @@
-"use client";
-import Head from "next/head";
+'use client';
+import React from 'react';
+import Head from 'next/head';
 import {
   useAddUserModalStore,
   useEditUserModalStore,
-} from "@/store/userModalStore";
-import { ToastContainer } from "react-toastify";
-import Header from "@/components/Header";
-import AddUserModal from "@/components/AddUserModal";
-import EditUserModal from "@/components/EditUserModal";
-import List from "@/components/List";
-import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+} from '../../store/userModalStore';
+import {ToastContainer} from 'react-toastify';
+import Header from '../../components/Header';
+import AddUserModal from '../../components/AddUserModal';
+import EditUserModal from '../../components/EditUserModal';
+import List from '../../components/List';
+import 'react-toastify/dist/ReactToastify.css';
+import {useState} from 'react';
 
 export default function Home() {
   const addUserModalStore = useAddUserModalStore();

@@ -1,36 +1,36 @@
-"use client";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useEditUserModalStore } from "@/store/userModalStore";
-import { updateUser } from "@/api/users";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+'use client';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import {useMutation, useQueryClient} from 'react-query';
+import {useEditUserModalStore} from '../store/userModalStore';
+import {updateUser} from '../api/users';
+import {XMarkIcon} from '@heroicons/react/20/solid';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditUserModal = () => {
-  const { toggle, modalData, modalId } = useEditUserModalStore();
+  const {toggle, modalData, modalId} = useEditUserModalStore();
 
-  const [editUser, setEditUser] = useState({ name: "", email: "", role: "" });
+  const [editUser, setEditUser] = useState({name: '', email: '', role: ''});
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
     (payload: {
       id: string;
-      data: { name: string; email: string; role: string };
+      data: {name: string; email: string; role: string};
     }) => updateUser(payload),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("users");
-        toast.success("User Updated Successfully", {
-          position: "top-right",
+        queryClient.invalidateQueries('users');
+        toast.success('User Updated Successfully', {
+          position: 'top-right',
           autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",
+          theme: 'colored',
         });
       },
     }
@@ -50,8 +50,8 @@ const EditUserModal = () => {
 
     toggle();
   };
-  const handleChange = (e: ChangeEvent<HTMLFormElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target as HTMLInputElement;
     setEditUser({
       ...editUser,
       [name]: value,
@@ -59,13 +59,11 @@ const EditUserModal = () => {
   };
   useEffect(() => {
     setEditUser(modalData);
-    console.log(modalId);
   }, [modalData]);
   return (
-    <div className="fixed z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm grid place-items-center px-6">
+    <div className="fixed z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-screen h-screen bg-gray-500 bg-opacity-75 transition-opacity grid place-items-center px-6">
       <form
         onSubmit={handleSubmit}
-        onChange={handleChange}
         className="flex flex-col gap-4 top-0 right-0 bg-white px-10 pb-12 pt-8 rounded-lg relative min-w-[42rem]"
       >
         {/* modal close button */}
@@ -85,7 +83,12 @@ const EditUserModal = () => {
             name="name"
             required
             value={editUser.name}
-            onChange={(e) => console.log(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEditUser({
+                ...editUser,
+                name: (e.target as HTMLInputElement).value,
+              });
+            }}
             className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
           />
         </div>
@@ -96,6 +99,12 @@ const EditUserModal = () => {
             name="email"
             required
             value={editUser.email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEditUser({
+                ...editUser,
+                email: (e.target as HTMLInputElement).value,
+              });
+            }}
             className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
           />
         </div>
@@ -106,6 +115,12 @@ const EditUserModal = () => {
             name="role"
             required
             value={editUser.role}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEditUser({
+                ...editUser,
+                role: (e.target as HTMLInputElement).value,
+              });
+            }}
             className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
           />
         </div>

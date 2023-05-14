@@ -1,12 +1,10 @@
-import { ArrowDownTrayIcon, PlusIcon } from "@heroicons/react/20/solid";
-import Button from "./Button";
-import {
-  useAddUserModalStore,
-  useEditUserModalStore,
-} from "@/store/userModalStore";
+import React from 'react';
+import {ArrowDownTrayIcon, PlusIcon} from '@heroicons/react/20/solid';
+import Button from './Button';
+import {useAddUserModalStore} from '../store/userModalStore';
 
-const Header = ({ userCount }: { userCount: number }) => {
-  const { toggle, isOpen } = useAddUserModalStore();
+const Header = ({userCount}: {userCount: number}) => {
+  const {toggle, isOpen} = useAddUserModalStore();
 
   return (
     <section className="flex max-md:flex-col justify-between px-4 pb-3 pt-6 border-b-gray-200 border-b-2">
@@ -31,10 +29,9 @@ const Header = ({ userCount }: { userCount: number }) => {
           icon={<PlusIcon />}
           text="Add User"
           onClickFunciton={() => {
-            console.log("clicked", isOpen);
             toggle();
           }}
-          additionalClasses={"bg-blue-500 hover:bg-blue-800 text-white"}
+          additionalClasses={'bg-blue-500 hover:bg-blue-800 text-white'}
         />
       </div>
     </section>

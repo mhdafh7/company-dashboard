@@ -1,24 +1,24 @@
-import { useMemo, useState } from "react";
+import {useMemo, useState} from 'react';
 import {
   useTable,
   useSortBy,
   usePagination,
   Row,
   ColumnInstance,
-} from "react-table";
-import Image from "next/image";
-import { useMutation, useQueryClient } from "react-query";
-import Button from "./Button";
+} from 'react-table';
+import Image from 'next/image';
+import {useQueryClient} from 'react-query';
+import Button from './Button';
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@heroicons/react/20/solid";
-import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
-import { useEditUserModalStore } from "@/store/userModalStore";
-import { deleteUser } from "@/api/users";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+} from '@heroicons/react/20/solid';
+import {TrashIcon, PencilIcon} from '@heroicons/react/24/outline';
+import {useEditUserModalStore} from '../store/userModalStore';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
+import React from 'react';
 
 type User = {
   id: string;
@@ -30,23 +30,18 @@ type User = {
   last_login: string;
 };
 
-const UserTable = ({ data }: { data: User[] }) => {
+const UserTable = ({data}: {data: User[]}) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deleteId,setDeleteId] = useState('');
+  const [deleteId, setDeleteId] = useState('');
 
   const queryClient = useQueryClient();
-  const deleteUserMutation = useMutation(deleteUser, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("users");
-    },
-  });
-  const { setModalData, setModalId, toggle } = useEditUserModalStore();
+  const {setModalData, setModalId, toggle} = useEditUserModalStore();
   const columns = useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: "name",
-        Cell: ({ row }: { row: { original: User } }) => {
+        Header: 'Name',
+        accessor: 'name',
+        Cell: ({row}: {row: {original: User}}) => {
           return (
             <span className="px-6 align-middle text-base whitespace-nowrap p-4 text-left flex items-center">
               <span className="rounded-full w-12 h-12 relative overflow-hidden mr-4">
@@ -65,46 +60,46 @@ const UserTable = ({ data }: { data: User[] }) => {
         },
       },
       {
-        Header: "Status",
-        accessor: "status",
-        Cell: ({ row }) => {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: ({row}) => {
           return (
             <span
-              className={"px-6 align-middle text-base whitespace-nowrap p-4"}
+              className={'px-6 align-middle text-base whitespace-nowrap p-4'}
             >
               <span
                 className={`flex items-center justify-center gap-2 w-24 ${
                   row.original.status
-                    ? "text-green-900 bg-green-200"
-                    : "text-gray-900 bg-gray-200"
+                    ? 'text-green-900 bg-green-200'
+                    : 'text-gray-900 bg-gray-200'
                 } py-2 px-1 rounded-3xl`}
               >
                 <span
                   className={`h-2 w-2 block rounded-full ${
-                    row.original.status ? "bg-green-900" : "bg-gray-900"
+                    row.original.status ? 'bg-green-900' : 'bg-gray-900'
                   }`}
                 ></span>
-                {row.original.status ? "Active" : "Invited"}
+                {row.original.status ? 'Active' : 'Invited'}
               </span>
             </span>
           );
         },
       },
-      { Header: "Role", accessor: "role" },
+      {Header: 'Role', accessor: 'role'},
       {
-        Header: "Login",
-        accessor: "login",
-        Cell: ({ row }) => {
+        Header: 'Login',
+        accessor: 'login',
+        Cell: ({row}) => {
           const date = new Date(row.original.last_login);
 
-          const formattedDate = date.toLocaleString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
+          const formattedDate = date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
           });
-          const formattedTime = date.toLocaleString("en-US", {
-            hour: "numeric",
-            minute: "numeric",
+          const formattedTime = date.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
             hour12: true,
           });
 
@@ -121,19 +116,17 @@ const UserTable = ({ data }: { data: User[] }) => {
   );
 
   // Table hook to add action button at the end of each row
-  const tableHooks = (hooks: {
-    visibleColumns: ((columns: any) => any[])[];
-  }) => {
-    hooks.visibleColumns.push((columns) => [
+  const tableHooks = (hooks: {visibleColumns: ((columns: any) => any[])[]}) => {
+    hooks.visibleColumns.push(columns => [
       ...columns,
       {
-        id: "actions",
-        Header: "",
+        id: 'actions',
+        Header: '',
         Cell: ({
           row,
         }: {
           row: {
-            values: { name: string; email: string; role: string };
+            values: {name: string; email: string; role: string};
             original: User;
           };
         }) => {
@@ -142,17 +135,15 @@ const UserTable = ({ data }: { data: User[] }) => {
               <button
                 className="text-red-500 mr-2"
                 onClick={() => {
-                  // deleteUserMutation.mutate(row.original.id);
                   setDeleteId(row.original.id);
-                  setIsDeleteModalOpen(true)
+                  setIsDeleteModalOpen(true);
                 }}
               >
                 <TrashIcon className="w-6 h-6" />
-                {/* TODO: Model confirmation on deleting */}
               </button>
               <button
                 onClick={() => {
-                  setModalData({ email: row.original.email, ...row.values });
+                  setModalData({...row.values});
                   setModalId(row.original.id);
                   toggle();
                 }}
@@ -177,12 +168,12 @@ const UserTable = ({ data }: { data: User[] }) => {
     gotoPage,
     nextPage,
     previousPage,
-    state: { pageIndex },
+    state: {pageIndex},
   } = useTable(
     {
       columns,
       data,
-      initialState: { pageIndex: 1 },
+      initialState: {pageIndex: 1},
     },
     tableHooks,
     useSortBy,
@@ -190,19 +181,23 @@ const UserTable = ({ data }: { data: User[] }) => {
   );
   return (
     <>
-    {isDeleteModalOpen && (<DeleteConfirmationModal id={deleteId} setIsOpen={setIsDeleteModalOpen}/>)}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          id={deleteId}
+          setIsOpen={setIsDeleteModalOpen}
+        />
+      )}
       <table className="w-full" {...getTableProps()}>
         <thead className="h-8 text-sm text-gray-400">
           {headerGroups.map((headerGroup, index: number) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {headerGroup.headers.map((column: ColumnInstance<User>, i) => (
-                // eslint-disable-next-line react/jsx-key
                 <th
                   className="px-6 align-middle py-3 text-sm whitespace-nowrap font-semibold text-left"
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                 >
                   <span className="flex justify-start items-center">
-                    {column.render("Header")}
+                    {column.render('Header')}
                     <span>
                       {column.isSorted ? (
                         column.isSortedDesc ? (
@@ -211,7 +206,7 @@ const UserTable = ({ data }: { data: User[] }) => {
                           <ArrowUpIcon className="w-6 h-6" />
                         )
                       ) : (
-                        ""
+                        ''
                       )}
                     </span>
                   </span>
@@ -232,7 +227,7 @@ const UserTable = ({ data }: { data: User[] }) => {
                       {...cell.getCellProps()}
                       key={i}
                     >
-                      {cell.render("Cell")}
+                      {cell.render('Cell')}
                     </td>
                   );
                 })}
@@ -244,21 +239,21 @@ const UserTable = ({ data }: { data: User[] }) => {
       <div className="flex justify-between items-center px-4 py-5 border-t-gray-200 border-t-2">
         <Button
           icon={<ChevronLeftIcon />}
-          text={"Previous"}
+          text={'Previous'}
           onClickFunciton={previousPage}
           additionalClasses={`${
             !canPreviousPage
-              ? "pointer-events-none opacity-50 cursor-not-allowed"
-              : "hover:bg-gray-200"
+              ? 'pointer-events-none opacity-50 cursor-not-allowed'
+              : 'hover:bg-gray-200'
           }`}
         />
         <nav className="flex gap-4">
-          {Array.from({ length: pageOptions.length }, (_, i) => i + 1).map(
-            (pageNum) => {
+          {Array.from({length: pageOptions.length}, (_, i) => i + 1).map(
+            pageNum => {
               return (
                 <button
                   className={`p-2 ${
-                    pageIndex + 1 === pageNum ? "bg-gray-200 rounded-md" : ""
+                    pageIndex + 1 === pageNum ? 'bg-gray-200 rounded-md' : ''
                   }`}
                   onClick={() => {
                     gotoPage(pageNum - 1);
@@ -273,12 +268,12 @@ const UserTable = ({ data }: { data: User[] }) => {
         </nav>
         <Button
           icon={<ChevronRightIcon />}
-          text={"Next"}
+          text={'Next'}
           onClickFunciton={nextPage}
           additionalClasses={`${
             !canNextPage
-              ? "pointer-events-none opacity-50 cursor-not-allowed"
-              : "flex-row-reverse hover:bg-gray-200"
+              ? 'pointer-events-none opacity-50 cursor-not-allowed'
+              : 'flex-row-reverse hover:bg-gray-200'
           }`}
         />
       </div>

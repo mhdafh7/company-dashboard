@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-import { deleteUser } from "@/api/users";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useMutation, useQueryClient } from "react-query";
-import { toast } from "react-toastify";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import React, {Dispatch, SetStateAction} from 'react';
+import {deleteUser} from '../api/users';
+import {XMarkIcon} from '@heroicons/react/24/outline';
+import {useMutation, useQueryClient} from 'react-query';
+import {toast} from 'react-toastify';
+import {TrashIcon} from '@heroicons/react/20/solid';
 import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteConfirmationModal = ({
@@ -16,16 +16,16 @@ const DeleteConfirmationModal = ({
   const queryClient = useQueryClient();
   const mutation = useMutation(deleteUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries("users");
-      toast.error("Deleted Successfully", {
-        position: "top-right",
+      queryClient.invalidateQueries('users');
+      toast.error('Deleted Successfully', {
+        position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: 'colored',
         icon: <TrashIcon className="w-6 h-6" />,
       });
     },
@@ -39,26 +39,15 @@ const DeleteConfirmationModal = ({
     <div
       className="fixed z-10 inset-0 overflow-y-auto block
       "
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
     >
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-          aria-hidden="true"
-        ></div>
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-        ></span>
+        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
 
         <div
           className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
           role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-headline"
         >
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
