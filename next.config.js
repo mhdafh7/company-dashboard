@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: ["localhost", "cloudflare-ipfs.com"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
