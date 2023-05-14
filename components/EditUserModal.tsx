@@ -1,14 +1,14 @@
 "use client";
-import { ChangeEvent, FormEvent, useEffect,  useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useEditUserModalStore } from "@/store/userModalStore";
 import { updateUser } from "@/api/users";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const EditUserModal = () => {
-  const { toggle, modalData } = useEditUserModalStore();
+  const { toggle, modalData, modalId } = useEditUserModalStore();
 
   const [editUser, setEditUser] = useState({ name: "", email: "", role: "" });
 
@@ -40,7 +40,7 @@ const EditUserModal = () => {
     e.preventDefault();
 
     mutation.mutate({
-      id: newId,
+      id: modalId,
       data: {
         name: editUser.name,
         email: editUser.email,
@@ -59,6 +59,7 @@ const EditUserModal = () => {
   };
   useEffect(() => {
     setEditUser(modalData);
+    console.log(modalId);
   }, [modalData]);
   return (
     <div className="fixed z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm grid place-items-center px-6">

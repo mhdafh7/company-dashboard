@@ -14,8 +14,12 @@ export const addUser = async (user: User) => {
   return await API.post("/users", user);
 };
 
-export const updateUser = async (user: User) => {
-  return await API.patch(`/users/${user.id}`, user);
+export const updateUser = async (payload: {
+  id: string;
+  data: { name: string; email: string; role: string };
+}) => {
+  const { id, data } = payload;
+  return await API.put(`/users/${id}`, data);
 };
 
 export const deleteUser = async (id: AxiosRequestConfig) => {
