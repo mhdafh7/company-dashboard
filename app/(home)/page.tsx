@@ -4,10 +4,12 @@ import {
   useAddUserModalStore,
   useEditUserModalStore,
 } from "@/store/userModalStore";
+import { ToastContainer } from "react-toastify";
 import Header from "@/components/Header";
 import AddUserModal from "@/components/AddUserModal";
 import EditUserModal from "@/components/EditUserModal";
 import List from "@/components/List";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const addUserModalStore = useAddUserModalStore();
@@ -31,6 +33,18 @@ export default function Home() {
         {/* List */}
         <List />
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

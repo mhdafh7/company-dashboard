@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from "react-query";
 import { useAddUserModalStore } from "@/store/userModalStore";
 import { addUser } from "@/api/users";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddUserModal = () => {
   const { toggle } = useAddUserModalStore();
@@ -16,6 +18,16 @@ const AddUserModal = () => {
   const addUserMutation = useMutation(addUser, {
     onSuccess: () => {
       queryClient.invalidateQueries("users");
+      toast.success("User Added Successfully", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     },
   });
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

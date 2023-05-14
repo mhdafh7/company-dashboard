@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -18,6 +18,7 @@ import {
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useEditUserModalStore } from "@/store/userModalStore";
 import { deleteUser } from "@/api/users";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 type User = {
   id: string;
@@ -30,6 +31,9 @@ type User = {
 };
 
 const UserTable = ({ data }: { data: User[] }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteId,setDeleteId] = useState('');
+
   const queryClient = useQueryClient();
   const deleteUserMutation = useMutation(deleteUser, {
     onSuccess: () => {
@@ -125,13 +129,22 @@ const UserTable = ({ data }: { data: User[] }) => {
       {
         id: "actions",
         Header: "",
-        Cell: ({ row }: { row: { original: User } }) => {
+        Cell: ({
+          row,
+        }: {
+          row: {
+            values: { name: string; email: string; role: string };
+            original: User;
+          };
+        }) => {
           return (
             <span className="px-6 align-middle text-base whitespace-nowrap p-4">
               <button
                 className="text-red-500 mr-2"
                 onClick={() => {
-                  deleteUserMutation.mutate(row.original.id);
+                  // deleteUserMutation.mutate(row.original.id);
+                  setDeleteId(row.original.id);
+                  setIsDeleteModalOpen(true)
                 }}
               >
                 <TrashIcon className="w-6 h-6" />
@@ -177,6 +190,7 @@ const UserTable = ({ data }: { data: User[] }) => {
   );
   return (
     <>
+    {isDeleteModalOpen && (<DeleteConfirmationModal id={deleteId} setIsOpen={setIsDeleteModalOpen}/>)}
       <table className="w-full" {...getTableProps()}>
         <thead className="h-8 text-sm text-gray-400">
           {headerGroups.map((headerGroup, index: number) => (
@@ -192,9 +206,9 @@ const UserTable = ({ data }: { data: User[] }) => {
                     <span>
                       {column.isSorted ? (
                         column.isSortedDesc ? (
-                          <ArrowDownIcon />
+                          <ArrowDownIcon className="w-6 h-6" />
                         ) : (
-                          <ArrowUpIcon />
+                          <ArrowUpIcon className="w-6 h-6" />
                         )
                       ) : (
                         ""

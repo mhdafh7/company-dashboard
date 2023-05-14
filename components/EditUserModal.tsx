@@ -1,31 +1,51 @@
 "use client";
-import { ChangeEvent, FormEvent, useEffect, useId, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect,  useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useEditUserModalStore } from "@/store/userModalStore";
-import { addUser } from "@/api/users";
+import { updateUser } from "@/api/users";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditUserModal = () => {
-  const { toggle, modalData, modalId } = useEditUserModalStore();
+  const { toggle, modalData } = useEditUserModalStore();
 
   const [editUser, setEditUser] = useState({ name: "", email: "", role: "" });
 
   const queryClient = useQueryClient();
-  const newId = useId();
 
-  const addUserMutation = useMutation(addUser, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("users");
-    },
-  });
+  const mutation = useMutation(
+    (payload: {
+      id: string;
+      data: { name: string; email: string; role: string };
+    }) => updateUser(payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("users");
+        toast.success("User Updated Successfully", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      },
+    }
+  );
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    addUserMutation.mutate({
+    mutation.mutate({
       id: newId,
-      name: editUser.name,
-      email: editUser.email,
-      role: editUser.role,
+      data: {
+        name: editUser.name,
+        email: editUser.email,
+        role: editUser.role,
+      },
     });
 
     toggle();
