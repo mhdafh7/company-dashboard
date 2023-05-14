@@ -1,9 +1,14 @@
+import { Dispatch, SetStateAction } from "react";
 import { getUsers } from "@/api/users";
 import { useQuery } from "react-query";
 import UserTable from "./UserTable";
 import { BarLoader } from "react-spinners";
 
-const List = () => {
+const List = ({
+  setUserCount,
+}: {
+  setUserCount: Dispatch<SetStateAction<number>>;
+}) => {
   const {
     isLoading,
     isError,
@@ -11,6 +16,7 @@ const List = () => {
     data: users,
   } = useQuery(["users"], () => getUsers(), {
     keepPreviousData: true,
+    onSuccess: (data) => setUserCount(data.length),
   });
   let content;
 

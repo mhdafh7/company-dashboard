@@ -9,11 +9,13 @@ import Header from "@/components/Header";
 import AddUserModal from "@/components/AddUserModal";
 import EditUserModal from "@/components/EditUserModal";
 import List from "@/components/List";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 export default function Home() {
   const addUserModalStore = useAddUserModalStore();
   const editUserModalStore = useEditUserModalStore();
+  const [userCount, setUserCount] = useState(0);
   return (
     <>
       <Head>
@@ -29,9 +31,9 @@ export default function Home() {
       ) : null}
       <div className="rounded-xl border-2 shadow-sm shadow-gray-200 w-full flex flex-col justify-center overflow-hidden relative">
         {/* Header */}
-        <Header />
+        <Header userCount={userCount} />
         {/* List */}
-        <List />
+        <List setUserCount={setUserCount} />
       </div>
       <ToastContainer
         position="top-right"
