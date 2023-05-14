@@ -3,7 +3,7 @@ export type User = {
   name: string;
   email: string;
   role: string;
-  avatar?:string;
-  status?:boolean;
-  last_login?:string;
+  avatar?: string;
+  status?: boolean;
+  last_login?: string;
 };
