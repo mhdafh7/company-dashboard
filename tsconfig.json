@@ -3,9 +3,6 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "build",
-    "paths": {
-      "@/*": ["./*"]
-    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

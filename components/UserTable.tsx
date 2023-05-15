@@ -1,13 +1,17 @@
-import {useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   useTable,
   useSortBy,
   usePagination,
   Row,
   ColumnInstance,
+  TableInstance,
+  UsePaginationInstanceProps,
+  UsePaginationState,
+  UseSortByInstanceProps,
+  Column,
 } from 'react-table';
 import Image from 'next/image';
-import {useQueryClient} from 'react-query';
 import Button from './Button';
 import {
   ArrowDownIcon,
@@ -18,7 +22,6 @@ import {
 import {TrashIcon, PencilIcon} from '@heroicons/react/24/outline';
 import {useEditUserModalStore} from '../store/userModalStore';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-import React from 'react';
 
 type User = {
   id: string;
@@ -29,14 +32,18 @@ type User = {
   status: boolean;
   last_login: string;
 };
+export type TableInstanceWithHooks<T extends object> = TableInstance<T> &
+  UsePaginationInstanceProps<T> &
+  UseSortByInstanceProps<T> & {
+    state: UsePaginationState<T>;
+  };
 
 const UserTable = ({data}: {data: User[]}) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
 
-  const queryClient = useQueryClient();
   const {setModalData, setModalId, toggle} = useEditUserModalStore();
-  const columns = useMemo(
+  const columns: readonly Column<User>[] = useMemo(
     () => [
       {
         Header: 'Name',
@@ -62,7 +69,7 @@ const UserTable = ({data}: {data: User[]}) => {
       {
         Header: 'Status',
         accessor: 'status',
-        Cell: ({row}) => {
+        Cell: ({row}: {row: {original: User}}) => {
           return (
             <span
               className={'px-6 align-middle text-base whitespace-nowrap p-4'}
@@ -88,8 +95,8 @@ const UserTable = ({data}: {data: User[]}) => {
       {Header: 'Role', accessor: 'role'},
       {
         Header: 'Login',
-        accessor: 'login',
-        Cell: ({row}) => {
+        accessor: 'last_login',
+        Cell: ({row}: {row: {original: User}}) => {
           const date = new Date(row.original.last_login);
 
           const formattedDate = date.toLocaleString('en-US', {
@@ -143,7 +150,7 @@ const UserTable = ({data}: {data: User[]}) => {
               </button>
               <button
                 onClick={() => {
-                  setModalData({...row.values});
+                  setModalData({...row.values, email: row.original.email});
                   setModalId(row.original.id);
                   toggle();
                 }}
@@ -173,12 +180,14 @@ const UserTable = ({data}: {data: User[]}) => {
     {
       columns,
       data,
-      initialState: {pageIndex: 1},
+      initialState: {
+        pageIndex: 0,
+      },
     },
     tableHooks,
     useSortBy,
     usePagination
-  );
+  ) as TableInstanceWithHooks<User>;
   return (
     <>
       {isDeleteModalOpen && (

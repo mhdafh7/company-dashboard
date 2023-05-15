@@ -1,4 +1,3 @@
-'use client';
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useMutation, useQueryClient} from 'react-query';
 import {useEditUserModalStore} from '../store/userModalStore';
@@ -50,15 +49,10 @@ const EditUserModal = () => {
 
     toggle();
   };
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target as HTMLInputElement;
-    setEditUser({
-      ...editUser,
-      [name]: value,
-    });
-  };
+
   useEffect(() => {
     setEditUser(modalData);
+    console.log(modalData);
   }, [modalData]);
   return (
     <div className="fixed z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-screen h-screen bg-gray-500 bg-opacity-75 transition-opacity grid place-items-center px-6">

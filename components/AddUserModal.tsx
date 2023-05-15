@@ -1,4 +1,3 @@
-'use client';
 import React, {ChangeEvent, FormEvent, useId, useState} from 'react';
 import {useMutation, useQueryClient} from 'react-query';
 import {useAddUserModalStore} from '../store/userModalStore';
