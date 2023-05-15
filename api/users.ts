@@ -1,8 +1,8 @@
 import {User} from '../types/types';
-import axios, {AxiosRequestConfig} from 'axios';
+import axios from 'axios';
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: 'https://645fcc1bfe8d6fb29e265e8e.mockapi.io/',
 });
 
 export const getUsers = async () => {
