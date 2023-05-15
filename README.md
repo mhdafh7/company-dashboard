@@ -1,6 +1,6 @@
 ## Custom Dashboard application
 
-Deployed [Link](https://).
+Deployed [Link](https://company-dashboard-2h24.vercel.app/).
 
 To run locally, first run the development server:
 
